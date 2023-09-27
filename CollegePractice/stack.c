@@ -61,13 +61,19 @@ void pop(struct stack *st)
 }
 void display(struct stack *st)
 {
-    printf("%d", st->arr[st->top]);
-}
+      do
+        {
+            /* code */  
+           printf("%d", st->arr[st->top]);
+            st->top--;
+        } while (null(st)!=1);
+    }
+
 
 int main()
 {
     // Write C code here
-    int n;
+    int n,z;
     struct stack *s = (struct stack *)malloc(sizeof(struct stack));
     s->top = -1;
     s->size = 100;
@@ -76,7 +82,14 @@ int main()
     // {
     //     printf("empty");
     // }
-    push(s, 5);
+    scanf("%d",&z);
+    for (int i = 0; i < 10; i++)
+    {
+        /* code */
+      push(s, z + i);
+    
+    }
+    
     display(s);
 
     return 0;
