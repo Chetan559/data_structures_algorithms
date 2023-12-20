@@ -1,64 +1,78 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <malloc.h>
-// print the array
-void print(int arr[], int n)
-{
-for (int i = 0; i < n; i++)
-{
-printf("%d ", arr[i]);
-}
-printf("\n");
-}
-// function for the merge of different array
-void merge(int A[], int B[], int C[], int m, int n)
-{
-int i = 0, j = 0, k = 0;
-while (i < m && j < n)
-{
-if (A[i] < B[j])
-{
-C[k] = A[i];
-i++;
-k++;
-}
-else
-{
-C[k] = B[j];
-j++;
-k++;
+
+void merge(int arr[], int low, int mid, int high) {
+  int n1 = mid - low + 1;
+  int n2 = high - mid;
+
+  // Create temporary arrays
+  int left[n1], right[n2];
+
+  // Copy data to temporary arrays
+  for (int i = 0; i < n1; i++) {
+    left[i] = arr[low + i];
+  }
+  for (int j = 0; j < n2; j++) {
+    right[j] = arr[mid + 1 + j];
+  }
+
+  // Merge the temporary arrays back into arr[]
+  int i = 0, j = 0, k = low;
+  while (i < n1 && j < n2) {
+    if (left[i] <= right[j]) {
+      arr[k] = left[i];
+      i++;
+    } else {
+      arr[k] = right[j];
+      j++;
+    }
+    k++;
+  }
+
+  // Copy the remaining elements
+  while (i < n1) {
+    arr[k] = left[i];
+    i++;
+    k++;
+  }
+  while (j < n2) {
+    arr[k] = right[j];
+    j++;
+    k++;
+  }
 }
 
+void mergeSort(int arr[], int low, int high) {
+  if (low < high) {
+    // Find the middle point
+    int mid = low + (high - low) / 2;
+
+    // Sort first and second halves
+    mergeSort(arr, low, mid);
+    mergeSort(arr, mid + 1, high);
+
+    // Merge the sorted halves
+    merge(arr, low, mid, high);
+  }
 }
-// if the araay A[i] is left out with some variable then they allocated directly
-while (i < m)
-{
-C[k] = A[i];
-i++;
-k++;
+
+void printArray(int arr[], int size) {
+  for (int i = 0; i < size; i++) {
+    printf("%d ", arr[i]);
+  }
+  printf("\n");
 }
-// if the araay B[j] is left out with some variable then they allocated directly
-while (j < m)
-{
-C[k] = B[j];
-j++;
-k++;
-}
-}
-int main()
-{
-int A[] = {4, 7, 9, 10};
-int B[] = {5, 8, 12, 14};
-int m, n;
-m = 4;
-n = 4;
-int C[m + n ];
-merge(A, B, C, m, n);
-printf("The Array A is:\n");
-print(A, m);
-printf("The Array B is:\n");
-print(B, n);
-printf("The Array after applying merge sort:\n");
-print(C, m + n );
-return 0;
+
+int main() {
+  int arr[] = {6, 5, 3, 1, 8, 7, 2, 4};
+  int n = sizeof(arr) / sizeof(arr[0]);
+
+  printf("Unsorted array: ");
+  printArray(arr, n);
+
+  mergeSort(arr, 0, n - 1);
+
+  printf("Sorted array: ");
+  printArray(arr, n);
+
+  return 0;
 }
